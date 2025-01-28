@@ -1,5 +1,50 @@
 {% extends 'master.html' %}
+{% load static %}
 
 {% block title %}
     <title>ShopEase - Customers</title>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'CSS/customers.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="customers pt-3 pb-3">ShopEase Customers</h2>
+        <table class="table table-striped">
+            <thead class="headers">
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Details</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            {% for customer in customers %}
+                <tbody class="customer-details">
+                    <tr>
+                        <td>{{ customer.id }}</td>
+                        <td>{{ customer.first_name }}</td>
+                        <td>{{ customer.last_name }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-info">Details</a>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary">Update</a>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+
+        </table>
+    </div>
 {% endblock %}
