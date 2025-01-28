@@ -18,22 +18,22 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <div class="container-fluid pt-3 pb-3">
-        <a class="navbar-brand" href="{% url 'customers' %}">ShopEase</a>
+    <nav class="navbar navbar-expand-sm">
+      <div class="container-fluid navigation pt-2 pb-2">
+        <a class="navbar-brand ps-2" href="{% url 'customers' %}">ShopEase</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mynavbar">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav me-auto ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="{% url 'customers' %}">Customers</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Add Customer</a>
+              <a class="nav-link" href="{% url 'add_customer' %}">Add Customer</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" href="{% url 'transactions' %}">Transactions</a>
             </li>
           </ul>
           <form class="d-flex">
