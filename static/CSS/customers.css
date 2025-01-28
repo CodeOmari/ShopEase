@@ -1,0 +1,16 @@
+.customers{
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+.headers tr th{
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.2em;
+}
+.customer-details tr td{
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
