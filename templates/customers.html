@@ -25,7 +25,7 @@
                 </tr>
             </thead>
 
-            {% for customer in customers %}
+            {% for customer in data.object_list %}
                 <tbody class="customer-details">
                     <tr>
                         <td>{{ customer.id }}</td>
@@ -33,18 +33,31 @@
                         <td>{{ customer.last_name }}</td>
                         <td>{{ customer.email }}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-info">Details</a>
+                            <a href="{% url 'customer_details' customer.id %}" class="btn btn-sm btn-info">Details</a>
                         </td>
                         <td>
                             <a href="#" class="btn btn-sm btn-primary">Update</a>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-danger">Remove</a>
+                            <a href="{% url 'delete_customer' customer.id %}" class="btn btn-sm btn-danger">Remove</a>
                         </td>
                     </tr>
                 </tbody>
             {% endfor %}
 
         </table>
+
+
+         <div class="row justify-content-center">
+            <div class="col-sm-2">
+                {% if data.has_previous %}
+                    <a class="btn btn-outline-info btn-sm" href="?page={{ data.previous_page_number }}"> << </a>
+                {% endif %}
+                <span class="mx-3">{{ data.number }}</span>
+                {% if data.has_next %}
+                    <a class="btn btn-outline-info btn-sm" href="?page={{ data.next_page_number }}"> >> </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}
