@@ -1,5 +1,7 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from main_app.models import Customer, Transaction
 
@@ -79,7 +81,13 @@ from main_app.models import Customer, Transaction
 
 def customers(request):
     data = Customer.objects.all()
-    return render(request, 'customers.html', {'customers': data})
+    paginator = Paginator(data, 10)
+    page_number = request.GET.get('page', 1)
+    try:
+        paginated_data = paginator.page(page_number)
+    except PageNotAnInteger | EmptyPage:
+        paginated_data = paginator.page(1)
+    return render(request, 'customers.html', {'data': paginated_data})
 
 
 def add_customer(request):
@@ -88,3 +96,29 @@ def add_customer(request):
 
 def transactions(request):
     return render(request, 'transactions.html')
+
+
+def delete_customer(request, customer_id):
+    customer = Customer.objects.get(id=customer_id)
+    customer.delete()
+    return redirect('customers')
+
+
+def customer_details(request, customer_id):
+    customer = Customer.objects.get(id=customer_id)
+    transactions = Transaction.objects.filter(customer=customer)
+    return render(request, 'customer_details.html', {'customer': customer, 'transactions': transactions})
+
+
+def search_customer(request):
+    data = Customer.objects.all()
+    search_term = request.GET.get('search')
+    data = Customer.objects.filter(Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)
+                                   | Q(email__icontains=search_term))
+    paginator = Paginator(data, 10)
+    page_number = request.GET.get('page', 1)
+    try:
+        paginated_data = paginator.page(page_number)
+    except PageNotAnInteger | EmptyPage:
+        paginated_data = paginator.page(1)
+    return render(request, 'search_customer.html', {'data': paginated_data})
