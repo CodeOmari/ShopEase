@@ -23,6 +23,9 @@ urlpatterns = [
     path('', views.customers, name='customers'),
     # path('test/', views.test, name='test'),
     path('add/customer', views.add_customer, name='add_customer'),
+    path('search/customer', views.search_customer, name='search_customer'),
+    path('customer/details/<int:customer_id>', views.customer_details, name='customer_details'),
+    path('customer/delete/<int:customer_id>', views.delete_customer, name='delete_customer'),
     path('transactions/', views.transactions, name='transactions'),
     path('admin/', admin.site.urls),
 ]
