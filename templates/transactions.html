@@ -1,10 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'master.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}
+    <title>ShopEase - Customers</title>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'CSS/customers.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="customers pt-3 pb-3">ShopEase Transactions</h2>
+        <table class="table table-striped">
+            <thead class="headers">
+                <tr>
+                    <th>ID</th>
+                    <th>CustomerID</th>
+                    <th>Item Type</th>
+                    <th>Item Description</th>
+                    <th>Item Price</th>
+                    <th>Purchase Status</th>
+                    <th>Details</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            {% for item in item.object_list %}
+                <tbody class="customer-details">
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.customer_id }}</td>
+                        <td>{{ item.item_type }}</td>
+                        <td>{{ item.item_description }}</td>
+                        <td>{{ item.amount }}</td>
+                        <td>{{ item.status }}</td>
+                        <td>
+                            <a href="{% url 'transaction_details' item.id %}" class="btn btn-sm btn-info">Details</a>
+                        </td>
+                        <td>
+                            <a href="" class="btn btn-sm btn-primary">Update</a>
+                        </td>
+                        <td>
+                            <a href="" class="btn btn-sm btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+
+        </table>
+
+
+         <div class="row justify-content-center">
+            <div class="col-sm-2">
+                {% if data.has_previous %}
+                    <a class="btn btn-outline-info btn-sm" href="?page={{ data.previous_page_number }}"> << </a>
+                {% endif %}
+                <span class="mx-3">{{ data.number }}</span>
+                {% if data.has_next %}
+                    <a class="btn btn-outline-info btn-sm" href="?page={{ data.next_page_number }}"> >> </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
