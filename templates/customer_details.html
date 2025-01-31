@@ -12,47 +12,43 @@
 {% block content %}
     <div class="container">
         <div class="row mt-2">
-            <div class="col-sm-4">
+             <div class="col-sm-4">
                 <h2 class="details pt-2 pb-2 d-flex justify-content-center">
                     Personal Details
                 </h2>
-                <div class="profile_pic d-flex justify-content-center pb-2">
-                    <img src="{% static 'IMAGES/user.png' %}" alt="logo" 
-                         class="img-fluid">
-                </div>
                 <table class="table table-striped">
                     <tr>
                         <th>First Name</th>
                         <td>{{ customer.first_name }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Last Name</th>
                         <td>{{ customer.last_name }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Email</th>
                         <td>{{ customer.email }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Date of Birth</th>
                         <td>{{ customer.dob }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Gender</th>
                         <td>{{ customer.gender }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Weight(Kgs)</th>
                         <td>{{ customer.weight }}</td>
                     </tr>
                 </table>
             </div>
-            
+        
             <div class="col-sm-4 ms-3">
                 <h2 class="details pt-2 pb-2 d-flex justify-content-center">
                     Transactions
