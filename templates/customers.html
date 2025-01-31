@@ -36,7 +36,7 @@
                             <a href="{% url 'customer_details' customer.id %}" class="btn btn-sm btn-info">Details</a>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-primary">Update</a>
+                            <a href="{% url 'update_customer' customer.id %}" class="btn btn-sm btn-primary">Update</a>
                         </td>
                         <td>
                             <a href="{% url 'delete_customer' customer.id %}" class="btn btn-sm btn-danger">Remove</a>
