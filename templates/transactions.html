@@ -18,12 +18,10 @@
                     <th>ID</th>
                     <th>CustomerID</th>
                     <th>Item Type</th>
-                    <th>Item Description</th>
                     <th>Item Price</th>
                     <th>Purchase Status</th>
+                    <th>Transaction Date</th>
                     <th>Details</th>
-                    <th>Update</th>
-                    <th>Delete</th>
                 </tr>
             </thead>
 
@@ -33,17 +31,11 @@
                         <td>{{ item.id }}</td>
                         <td>{{ item.customer_id }}</td>
                         <td>{{ item.item_type }}</td>
-                        <td>{{ item.item_description }}</td>
                         <td>{{ item.amount }}</td>
                         <td>{{ item.status }}</td>
+                        <td>{{ item.created_at }}</td>
                         <td>
                             <a href="{% url 'transaction_details' item.id %}" class="btn btn-sm btn-info">Details</a>
-                        </td>
-                        <td>
-                            <a href="" class="btn btn-sm btn-primary">Update</a>
-                        </td>
-                        <td>
-                            <a href="" class="btn btn-sm btn-danger">Remove</a>
                         </td>
                     </tr>
                 </tbody>
