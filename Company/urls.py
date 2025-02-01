@@ -29,5 +29,8 @@ urlpatterns = [
     path('transaction/details/<int:transaction_id>', views.transaction_details, name='transaction_details'),
     path('customer/delete/<int:customer_id>', views.delete_customer, name='delete_customer'),
     path('transactions/', views.transactions, name='transactions'),
+    path('login', views.login_user, name='login'),
+    path('logout', views.signout_user, name='logout'),
+    path('register/', views.register, name='register'),
     path('admin/', admin.site.urls),
 ]
