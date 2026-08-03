@@ -1,15 +1,15 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .models import CustomUser
+from .serializers import CustomUserSerializer
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 # Create your views here.
-class UserCreateView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class CustomUserCreateView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
     permission_classes = [AllowAny]
 
 @api_view(['GET'])
