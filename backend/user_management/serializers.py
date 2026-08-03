@@ -1,13 +1,26 @@
-from django.contrib.auth.models import User
+from .models import CustomUser
 from rest_framework import serializers
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        model = CustomUser
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'profile_pic',
+            'role',
+            'password1',
+            'password2',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
     def validate(self, data):
         if data['password1'] != data['password2']:
@@ -15,9 +28,13 @@ class UserSerializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username = validated_data['username'],
+        user = CustomUser.objects.create_user(
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name'],
             email = validated_data['email'],
+            phone_number = validated_data['phone_number'],
+            profile_pic = validated_data.get['profile_pic'],
+            role = validated_data['role'],
             password = validated_data['password1']
         )
 
