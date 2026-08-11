@@ -4,6 +4,24 @@ from django.conf import settings
 # Create your models here.
 class CustomerProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='customer_profile')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
+
+    class Meta:
+        db_table = "Customer Profiles"
+
+
+
+class CustomerAddress(models.Model):
+    customer = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE, related_name="customer_addresses")
+    label = models.CharField(
+        max_length=50,
+        help_text="Example: Home, Work, Office"
+    )
     shipping_address = models.CharField(
             max_length=150, 
             help_text="Example: House 15, Green Valley Apartments"
@@ -20,16 +38,21 @@ class CustomerProfile(models.Model):
         max_length=10,
         help_text="00100"
     )
+    is_default = models.BooleanField( 
+        default=False, 
+        help_text="Marks this as the customer's default shipping address" 
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-    def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}'
-
     class Meta:
-        db_table = "Customer Profiles"
+        db_table = "Customer Address"
+        ordering = ["-is_default", "-created_at"]
 
+    def __str__(self): 
+        return f"{self.customer.user.first_name} - {self.label}"
+
+    
 
 class SellerProfile(models.Model):
     VERIFICATION_CHOICES = [
