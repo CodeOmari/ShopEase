@@ -28,4 +28,8 @@ urlpatterns = [
     path("api/accounts/", include("accounts.urls")),
     
     path("api/shop-ease/", include("shop.urls")),
+
+    path("api/cart/", include("cart.urls")),
+
+    path("api/wish-list/", include("wishlist.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
