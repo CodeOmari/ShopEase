@@ -11,6 +11,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'id',
             'first_name',
             'last_name',
+            'username',
             'email',
             'phone_number',
             'profile_pic',
@@ -29,11 +30,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         user = CustomUser.objects.create_user(
+            username=validated_data['username'],
             first_name = validated_data['first_name'],
             last_name = validated_data['last_name'],
             email = validated_data['email'],
             phone_number = validated_data['phone_number'],
-            profile_pic = validated_data.get['profile_pic'],
+            profile_pic = validated_data.get('profile_pic'),
             role = validated_data['role'],
             password = validated_data['password1']
         )
