@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=10, help_text="0712345678")
+    phone_number = models.CharField(max_length=10, help_text="0712345678", unique=True)
     profile_pic = models.ImageField(upload_to=generate_unique_name, null=True, blank=True, default='profile_pictures/default-user.svg')
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='BUYER')
     created_at = models.DateTimeField(auto_now_add=True)
