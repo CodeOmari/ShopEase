@@ -67,7 +67,6 @@ class SellerProfile(models.Model):
         max_length=150, 
         help_text="Example: Stall 24, Greenspan Mall"
     )
-    phone_number = models.CharField(max_length=10, help_text="0712345678")
     description = models.TextField()
     street = models.CharField(
         max_length=100,
