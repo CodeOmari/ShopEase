@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .serializers import CustomerProfileSerializer, SellerProfileSerializer
 from .models import CustomerProfile, SellerProfile
+from .permissions import IsBuyer, IsSeller
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -9,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 class CustomerProfileViewSet(viewsets.ModelViewSet):
     queryset = CustomerProfile.objects.all()
     serializer_class = CustomerProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsBuyer]
 
     def get_queryset(self):
         return CustomerProfile.objects.filter(user=self.request.user)
@@ -21,7 +22,7 @@ class CustomerProfileViewSet(viewsets.ModelViewSet):
 class SellerProfileViewSet(viewsets.ModelViewSet):
     queryset = SellerProfile.objects.all()
     serializer_class = SellerProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return SellerProfile.objects.filter(user=self.request.user)
