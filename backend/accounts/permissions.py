@@ -9,7 +9,7 @@ class IsSeller(BasePermission):
             return False
 
         if request.user.role != 'SELLER':
-            raise PermissionDenied("Your role is BUYER. You cannot access a seller profile.")
+            raise PermissionDenied("You cannot access a seller profile.")
 
         return True
 
@@ -21,6 +21,18 @@ class IsBuyer(BasePermission):
             return False
 
         if request.user.role != 'BUYER':
-            raise PermissionDenied("Your role is SELLER. You cannot access a customer profile.")
+            raise PermissionDenied("You cannot access a customer profile.")
+
+        return True
+
+
+class IsAdmin(BasePermission):
+
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
+
+        if request.user.role != 'ADMIN':
+            raise PermissionDenied("You cannot access the admin profile.")
 
         return True
