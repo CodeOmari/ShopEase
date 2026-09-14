@@ -15,6 +15,7 @@ class CustomUser(AbstractUser):
     ROLE_CHOICES = [
         ('BUYER', 'Buyer'),
         ('SELLER', 'Seller'),
+        ('ADMIN', 'Admin'),
     ]
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
