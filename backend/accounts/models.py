@@ -106,3 +106,16 @@ class SellerProfile(models.Model):
 
     class Meta:
         db_table = "Seller Profiles"
+
+
+class AdminProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='admin_profile')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
+
+    class Meta:
+        db_table = "Admin Profiles"
