@@ -1,4 +1,4 @@
-from .models import CustomerProfile, SellerProfile, CustomerAddress
+from .models import CustomerProfile, SellerProfile, CustomerAddress, AdminProfile
 from rest_framework import serializers
 
 class CustomerProfileSerializer(serializers.ModelSerializer):
@@ -88,3 +88,30 @@ class SellerProfileSerializer(serializers.ModelSerializer):
                 'created_at', 
                 'updated_at'
             ]
+
+
+
+class AdminProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    phone_number = serializers.CharField(source='user.phone_number', read_only=True)
+    role = serializers.CharField(source='user.role', read_only=True)
+    profile_pic = serializers.ImageField(
+        source='user.profile_pic',
+        read_only=True
+    )
+    class Meta:
+        model = AdminProfile
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'profile_pic',
+            'role',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
