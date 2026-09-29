@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+.right-section h4{
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.right-section p{
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.link-shop{
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: text-decoration 0.3s ease;
+    color: #3061EF;
+}
+.link-shop:hover{
+    text-decoration: underline;
+}
