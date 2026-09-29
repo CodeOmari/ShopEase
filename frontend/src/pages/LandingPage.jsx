@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 
 import '../styles/LandingPage.css';
 import Logo from '../assets/shopease-logo.webp';
-import { ShoppingCart, Sparkles, ArrowRight } from "lucide-react";
+import { ShoppingCart, Sparkles, ArrowRight, Truck, ShieldCheck, Shield } from "lucide-react";
 import productsData from '../products';
+import FeaturedProducts from "../components/FeaturedProducts";
+import Footer from "../components/Footer";
 
 export default function LandingPage(){
+    
     return(
         <div className="container-fluid">
             <div className="container-fluid top-section d-flex align-items-center justify-content-between border-bottom sticky-top">
@@ -89,6 +92,49 @@ export default function LandingPage(){
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="container mt-5">
+                <FeaturedProducts />
+            </div>
+
+            <div className="container mb-5">
+                <div className="row g-4">
+                    <div className="col-12 col-sm-4 col-sm-4">
+                        <div className="border p-3 rounded details-container">
+                            <Truck  color="#3061EF" size={20}/>
+
+                            <div className="details mt-3">
+                                <h5>Fast Shipping</h5>
+                                <p className="text-secondary">Free on orders over $150.</p>
+                            </div>  
+                        </div>
+                    </div>
+                    <div className="col-12 col-sm-4 col-sm-4">
+                        <div className="border p-3 rounded details-container">
+                            <ShieldCheck color="#3061EF" size={20} />
+
+                            <div className="details mt-3">
+                                <h5>Buyer Protection</h5>
+                                <p className="text-secondary">30-day easy returns</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12 col-sm-4 col-sm-4">
+                       <div className="border p-3 rounded details-container">
+                             <Sparkles color="#3061EF" size={20} />
+
+                            <div className="details mt-3">
+                                <h5>Seller-friendly</h5>
+                                <p className="text-secondary">Track sales and offers in one dashboard.</p>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="container-fluid mt-5">
+                <Footer />
             </div>
         </div>
     )
