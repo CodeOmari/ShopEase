@@ -5,6 +5,8 @@ from .permissions import IsSeller, IsAdmin, IsCustomer, IsProductImageOwner, IsP
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS, AllowAny
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -37,6 +39,12 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer.save(
             seller=self.request.user.seller_profile
         )
+
+    @action(detail=False, methods=["get"])
+    def featured(self, request):
+        products = Product.objects.order_by("-created_at")[:6]
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
 
 class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
