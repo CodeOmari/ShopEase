@@ -78,3 +78,13 @@
     font-weight: 600;
     color: #000;
 }
+.details-container{
+    background-color: #E8EFFC;
+}
+.details h5{
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.details p{
+    font-size: 0.9rem;
+}
