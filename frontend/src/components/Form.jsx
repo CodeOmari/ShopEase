@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../api";
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate, Link, useLocation } from "react-router-dom"
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import LoadingIndicator from './LoadingIndicator';
 
@@ -22,6 +22,7 @@ export default function Form({route, method}){
     const [loading, setLoading] = useState(false);
  
     const navigate = useNavigate();
+    const location = useLocation();
 
     const isLogin = method === "login";
     const action = method === "login" ? "Login" : "Register";
@@ -62,22 +63,27 @@ export default function Form({route, method}){
             password: password1,
             };
         } else {
-            payload = { 
+            payload = {
+            first_name: firstName,
+            last_name: lastName,
             username, 
             email,
+            phone_number: phoneNumber,
+            role,
             password1, 
             password2, 
             };
         }
 
-        console.log("Payload:", payload);
 
         const res = await api.post(route, payload);
 
         if (method === "login") {
             localStorage.setItem(ACCESS_TOKEN, res.data.access);
             localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-            navigate("/");
+            
+            const from = location.state?.from?.pathname || "/dashboard";
+            navigate(from, { replace: true });
         } else {
              await Swal.fire({ 
                     icon: "success", 
