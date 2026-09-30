@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import '../styles/LandingPage.css';
@@ -18,13 +17,13 @@ export default function LandingPage(){
                 </div>
 
                 <nav className="navigation-section">
-                    <Link to="" className="pe-3 navigation-link">Home</Link>
-                    <Link to='' className="pe-3 navigation-link">Shop</Link>
-                    <Link to="" className="navigation-link">Dashboard</Link>
+                    <Link to="/" className="pe-3 navigation-link">Home</Link>
+                    <Link to='/shop' className="pe-3 navigation-link">Shop</Link>
+                    <Link to="/dashboard" className="navigation-link">Dashboard</Link>
                 </nav>
 
                 <div>
-                    <Link to="" className="border border-1 rounded p-2 cart-btn">
+                    <Link to="/cart" className="border border-1 rounded p-2 cart-btn">
                         <ShoppingCart size={18} color="#6C757D"/>
                     </Link>
                 </div>
@@ -82,7 +81,7 @@ export default function LandingPage(){
                         <div className="container">
                             <div className="row">
                                 {productsData.map((product) => (
-                                    <div className="col-12 col-sm-6 col-lg-6 d-flex">
+                                    <div className="col-12 col-sm-6 col-lg-6 d-flex" key={product.id}>
                                         <div className=" product-container p-4">
                                             <img src={product.img.src} alt={product.img.alt} className="img-fluid rounded" />   
                                         </div>
