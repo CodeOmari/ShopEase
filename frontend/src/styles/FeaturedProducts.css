@@ -17,3 +17,37 @@
 .link-shop:hover{
     text-decoration: underline;
 }
+.start-section{
+    margin-top: -12px;
+}
+.product-info{
+    background-color: #f6f2e7;
+}
+.category-info{
+    font-size: 0.56rem;
+    font-weight: 600;
+    background-color: #cacdd2;
+    color: #000;
+}
+.price-info{
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.product-name{
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.description-info{
+    font-size: 0.8rem;
+    color: #6C757D;
+    font-weight: 500;
+}
+.view-btn{
+    background-color: #3061EF;
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+.view-btn:hover{
+    opacity: 0.9;
+}
