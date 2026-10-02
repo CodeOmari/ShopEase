@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import ProductDetails from "./pages/ProductDetails";
 
 import SellerDashboard from "./pages/SellerDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
@@ -74,8 +75,9 @@ export default function App() {
             <Cart />
           </ProtectedRoute>
         } />
-        <Route path="*" element={<NotFound />} />
 
+        <Route path="*" element={<NotFound />} />
+        <Route path="/products/:slug" element={<ProductDetails />} />
       </Routes>
     </BrowserRouter>
   )
