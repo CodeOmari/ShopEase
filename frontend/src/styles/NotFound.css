@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+.not-found h1{
+    color: #3061EF;
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+.not-found p{
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
