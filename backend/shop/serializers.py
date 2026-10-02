@@ -6,7 +6,7 @@ from django.db import transaction
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields =  ["id", "category", "slug", "description"]
         read_only_fields = [
             'id',
             'slug',
@@ -61,6 +61,13 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        source='category',
+        write_only=True
+    )
+
     images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -69,6 +76,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'id',
             'seller',
             'category',
+            'category_id',
             'name',
             'brand',
             'slug',
