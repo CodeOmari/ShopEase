@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .serializers import ProductSerializer, ProductImageSerializer, CategorySerializer, ReviewSerializer
 from .models import Category, Product, ProductImage, Review
-from .permissions import IsSeller, IsAdmin, IsCustomer, IsProductImageOwner, IsProductOwner, IsReviewOwner
+from .permissions import IsSeller, IsAdmin, IsCustomer, IsProductImageOwner, IsProductOwner, IsReviewOwner, IsCustomerOrReadOnly, IsSellerOrReadOnly
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS, AllowAny
@@ -25,14 +25,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsSeller, IsProductOwner]
+    permission_classes = [IsProductOwner, IsSellerOrReadOnly]
+    lookup_field = "slug"
 
     def get_queryset(self):
-        if self.request.user.is_authenticated and self.request.user.role == "SELLER":
-            return Product.objects.filter(
-                seller=self.request.user.seller_profile
-            )
-
+        user = self.request.user
+        if (
+            self.action in ["update", "partial_update", "destroy"]
+            and user.is_authenticated
+            and user.role == "SELLER"
+        ):
+            return Product.objects.filter(seller=user.seller_profile)
         return Product.objects.all()
 
     def perform_create(self, serializer):
@@ -40,16 +43,16 @@ class ProductViewSet(viewsets.ModelViewSet):
             seller=self.request.user.seller_profile
         )
 
-    @action(detail=False, methods=["get"])
+    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def featured(self, request):
         products = Product.objects.order_by("-created_at")[:6]
         serializer = self.get_serializer(products, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data)    
 
 class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsProductOwner, IsSeller, IsProductImageOwner]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsProductOwner, IsSeller, IsProductImageOwner, IsSellerOrReadOnly]
 
     def get_queryset(self):
         if self.request.user.is_authenticated and self.request.user.role == "SELLER":
@@ -63,7 +66,7 @@ class ProductImageViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsCustomer, IsReviewOwner]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsCustomer, IsReviewOwner, IsCustomerOrReadOnly]
 
     def get_queryset(self):
         return Review.objects.all()
