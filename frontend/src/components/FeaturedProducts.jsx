@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
 import '../styles/FeaturedProducts.css';
+import defaultImage from "../assets/default-image.jpg";
+
 export default function FeaturedProducts(){
     const [products, setProducts] = useState([]);
 
@@ -9,7 +11,7 @@ export default function FeaturedProducts(){
         const fetchFeaturedProducts = async () => {
             try {
                 const response = await api.get(
-                    "/api/products/featured/"
+                    "/api/shop-ease/products/featured/"
                 );
 
                 setProducts(response.data);
@@ -20,6 +22,8 @@ export default function FeaturedProducts(){
         fetchFeaturedProducts();
     }, []);
 
+    console.log("PRODUCTS:", products);
+
     return (
         <div className="container mt-5">
             <div className="featured-products d-flex justify-content-between">
@@ -29,7 +33,7 @@ export default function FeaturedProducts(){
                 </div>
 
                 <div className="left-section d-flex align-items-center">
-                    <Link to="" className="link-shop">View all</Link>
+                    <Link to="/shop" className="link-shop">View all</Link>
                 </div>
             </div>
 
@@ -38,35 +42,41 @@ export default function FeaturedProducts(){
                     No featured products available.
                 </p>
             ) : (
-                <div className="row g-4">
+                <div className="row g-4 mb-5">                    
                     {products.map((product) => (
                         <div
-                            className="col-12 col-sm-6 col-lg-4 col-xl-2"
+                            className="col-12 col-sm-4 col-lg-4"
                             key={product.id}
                         >
-                            <div className="card h-100 shadow-sm">
+                            <div className="product-container w-75">
                                 <img
-                                    src={product.image}
-                                    className="card-img-top"
+                                    src={product.images?.[0]?.image || defaultImage }
+                                    className="img-fluid rounded-top"
                                     alt={product.name}
-                                    style={{
-                                        height: "180px",
-                                        objectFit: "cover",
-                                    }}
                                 />
 
-                                <div className="card-body d-flex flex-column">
-                                    <h6 className="card-title">
+                                <div className="d-flex flex-column p-4 product-info border rounded-bottom">
+                                    <div className="d-flex align-items-center justify-content-between start-section">
+                                        <p className="category-info p-1 rounded-pill">
+                                            { product.category?.category }
+                                        </p> 
+
+                                        <p className="price-info">
+                                            Ksh.{product.price}
+                                        </p>
+                                    </div>
+
+                                    <h6 className="product-name">
                                         {product.name}
                                     </h6>
 
-                                    <p className="fw-bold text-primary">
-                                        KSh {product.price}
+                                    <p className="description-info">
+                                        {product.description}
                                     </p>
 
                                     <Link
-                                        to={`/products/${product.id}`}
-                                        className="btn btn-primary mt-auto"
+                                        to={`/products/${product.slug}`}
+                                        className="text-center p-2 mt-auto view-btn rounded"
                                     >
                                         View Product
                                     </Link>
