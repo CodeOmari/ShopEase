@@ -82,7 +82,7 @@ export default function LandingPage(){
                             <div className="row">
                                 {productsData.map((product) => (
                                     <div className="col-12 col-sm-6 col-lg-6 d-flex" key={product.id}>
-                                        <div className=" product-container p-4">
+                                        <div className=" product-containers p-4">
                                             <img src={product.img.src} alt={product.img.alt} className="img-fluid rounded" />   
                                         </div>
                                     </div>
