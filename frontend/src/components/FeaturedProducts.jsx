@@ -4,6 +4,16 @@ import api from "../api";
 import '../styles/FeaturedProducts.css';
 import defaultImage from "../assets/default-image.jpg";
 
+
+const truncateDescription = (description, maxLength = 100) => {
+    if (description.length <= maxLength) {
+        return description;
+    }
+
+    return description.slice(0, maxLength) + "...";
+};
+
+
 export default function FeaturedProducts(){
     const [products, setProducts] = useState([]);
 
@@ -45,10 +55,10 @@ export default function FeaturedProducts(){
                 <div className="row g-4 mb-5">                    
                     {products.map((product) => (
                         <div
-                            className="col-12 col-sm-4 col-lg-4"
+                            className="col-12 col-sm-3 col-lg-3"
                             key={product.id}
                         >
-                            <div className="product-container w-75">
+                            <div className="product-container">
                                 <img
                                     src={product.images?.[0]?.image || defaultImage }
                                     className="img-fluid rounded-top"
@@ -71,7 +81,7 @@ export default function FeaturedProducts(){
                                     </h6>
 
                                     <p className="description-info">
-                                        {product.description}
+                                        {truncateDescription(product.description, 100)}
                                     </p>
 
                                     <Link
