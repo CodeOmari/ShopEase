@@ -1,12 +1,18 @@
 from rest_framework import serializers
 from .models import Category, Product, ProductImage, Review
+from accounts.serializers import SellerProfileSerializer
 
 from django.db import transaction
 
 class CategorySerializer(serializers.ModelSerializer):
+    category_display = serializers.CharField(
+        source="get_category_display",
+        read_only=True
+    )
+
     class Meta:
         model = Category
-        fields =  ["id", "category", "slug", "description"]
+        fields =  ["id", "category", "category_display", "slug", "description"]
         read_only_fields = [
             'id',
             'slug',
@@ -69,6 +75,7 @@ class ProductSerializer(serializers.ModelSerializer):
     )
 
     images = ProductImageSerializer(many=True, read_only=True)
+    seller = SellerProfileSerializer(read_only=True)
 
     class Meta:
         model = Product
