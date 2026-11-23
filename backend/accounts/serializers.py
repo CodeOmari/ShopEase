@@ -7,10 +7,7 @@ class CustomerProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
     phone_number = serializers.CharField(source='user.phone_number', read_only=True)
     role = serializers.CharField(source='user.role', read_only=True)
-    profile_pic = serializers.ImageField(
-        source='user.profile_pic',
-        read_only=True
-    )
+    profile_pic = serializers.ImageField(source='user.profile_pic', read_only=True)
     class Meta:
         model = CustomerProfile
         fields = [
@@ -29,22 +26,24 @@ class CustomerProfileSerializer(serializers.ModelSerializer):
 class CustomerAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerAddress
-        field = [
+        fields = [
             "id",
-            "label", 
-            "shipping_address", 
-            "street", 
-            "county", 
-            "postal_code", 
-            "is_default", 
-            "created_at", 
-            "updated_at"
-        ]
-        read_only_fields = [
-            "id",
-            "created_at", 
+            "label",
+            "shipping_address",
+            "street",
+            "county",
+            "postal_code",
+            "is_default",
+            "created_at",
             "updated_at",
         ]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+    def validate_postal_code(self, value):
+        value = value.strip()
+        if not (value.isdigit() and len(value) == 5):
+            raise serializers.ValidationError("Postal code must be 5 digits, for example 00100.")
+        return value
 
 class SellerProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name', read_only=True)
@@ -52,42 +51,31 @@ class SellerProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
     phone_number = serializers.CharField(source='user.phone_number', read_only=True)
     role = serializers.CharField(source='user.role', read_only=True)
-    profile_pic = serializers.ImageField(
-        source='user.profile_pic',
-        read_only=True
-    )
+    profile_pic = serializers.ImageField(source='user.profile_pic', read_only=True)
+    verified_by_name = serializers.SerializerMethodField()
+    can_add_products = serializers.BooleanField(read_only=True)
+    verification_message = serializers.CharField(read_only=True)
+
+    def get_verified_by_name(self, obj):
+        if not obj.verified_by:
+            return None
+        return f"{obj.verified_by.first_name} {obj.verified_by.last_name}"
+    
     class Meta:
         model = SellerProfile
         fields = [
-            "id",
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'profile_pic',
-            'role', 
-            'business_name',
-            'business_email',
-            'business_address',
-            'phone_number',
-            'description',
-            'street',
-            'county',
-            'postal_code',
-            'is_verified', 
-            'verification_status',
-            'verified_by',
-            "created_at", 
-            "updated_at"
+            'id', 'first_name', 'last_name', 'email', 'phone_number',
+            'profile_pic', 'role', 'business_name', 'business_email',
+            'business_address', 'description', 'street', 'county',
+            'postal_code', 'is_verified', 'verification_status',
+            'verified_by', 'verified_by_name', 'verified_at',
+            'can_add_products', 'verification_message',
+            'created_at', 'updated_at',
         ]
         read_only_fields = [
-                'id', 
-                'is_verified', 
-                'verification_status',
-                'verified_by',
-                'created_at', 
-                'updated_at'
-            ]
+            'id', 'is_verified', 'verification_status', 'verified_by',
+            'verified_at', 'created_at', 'updated_at',
+        ]
 
 
 
@@ -97,10 +85,8 @@ class AdminProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
     phone_number = serializers.CharField(source='user.phone_number', read_only=True)
     role = serializers.CharField(source='user.role', read_only=True)
-    profile_pic = serializers.ImageField(
-        source='user.profile_pic',
-        read_only=True
-    )
+    profile_pic = serializers.ImageField(source='user.profile_pic', read_only=True)
+    
     class Meta:
         model = AdminProfile
         fields = [
