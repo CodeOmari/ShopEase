@@ -5,6 +5,7 @@ import os
 import uuid
 
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 # Create your models here.
 def generate_unique_name(instance, filename):
@@ -120,3 +121,54 @@ class Review(models.Model):
 
     def __str__(self):
         return f'{self.customer.user.name} - {self.product.name}'
+
+
+class Announcement(models.Model):
+    seller = models.ForeignKey('accounts.SellerProfile', on_delete=models.CASCADE, related_name='announcements')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True, related_name='announcements', help_text="Optional. Required when a discount is given.")
+    title = models.CharField(max_length=150)
+    message = models.TextField()
+    discount_percent = models.PositiveSmallIntegerField(null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(90)],)
+    ends_at = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "Announcements"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def is_live(self):
+        return self.is_active and self.ends_at > timezone.now()
+
+    def apply_discount(self):
+        if self.product_id and self.discount_percent:
+            p = self.product
+            Product.objects.filter(pk=p.pk).update(
+                discount_price=p.price * (100 - self.discount_percent) // 100
+            )
+
+    def end(self):
+        self.is_active = False
+        self.save(update_fields=["is_active", "updated_at"])
+        if self.product_id and self.discount_percent:
+            still_live = Announcement.objects.filter(
+                product_id=self.product_id,
+                is_active=True,
+                ends_at__gt=timezone.now(),
+                discount_percent__isnull=False,
+            ).exclude(pk=self.pk).exists()
+            if not still_live:
+                Product.objects.filter(pk=self.product_id).update(discount_price=0)
+
+
+def expire_announcements(seller=None):
+    due = Announcement.objects.filter(is_active=True, ends_at__lte=timezone.now())
+    if seller is not None:
+        due = due.filter(seller=seller)
+    for announcement in due.select_related("product"):
+        announcement.end()
