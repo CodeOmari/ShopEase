@@ -1,22 +1,14 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-# Ensure CRUD operations for sellers on products and product images
+
 class IsSeller(BasePermission):
     def has_permission(self, request, view):
-        return (
-            request.user.is_authenticated and
-            request.user.role == "SELLER"
-        )
+        return (request.user.is_authenticated and request.user.role == "SELLER")
 
-# Only customers can create reviews
 class IsCustomer(BasePermission):
     def has_permission(self, request, view):
-        return (
-            request.user.is_authenticated and
-            request.user.role == "BUYER"
-        )
+        return (request.user.is_authenticated and request.user.role == "BUYER")
 
-# Sellers can only perform CRUD operations on their own products
 class IsProductOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in ["GET", "HEAD", "OPTIONS"]:
@@ -48,22 +40,15 @@ class IsSellerOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return (
-            request.user.is_authenticated and
-            request.user.role == "SELLER"
-        )
+            request.user.is_authenticated and request.user.role == "SELLER")
 
 class IsCustomerOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
             return True
-        return (
-            request.user.is_authenticated and
-            request.user.role == "BUYER"
-        )
-
+        return (request.user.is_authenticated and request.user.role == "BUYER")
     
 class IsAdmin(BasePermission):
-
     def has_permission(self, request, view):
         return (
             request.user.is_authenticated
@@ -72,3 +57,16 @@ class IsAdmin(BasePermission):
                 or request.user.role == "ADMIN"
             )
         )
+
+# Only approved sellers can create products or product images.
+class CanAddProducts(BasePermission):
+    def has_permission(self, request, view):
+        if request.method != "POST":
+            return True
+        profile = getattr(request.user, "seller_profile", None)
+        if profile is None:
+            return False
+        if not profile.can_add_products:
+            self.message = profile.verification_message
+            return False
+        return True
